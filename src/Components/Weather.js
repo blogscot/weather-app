@@ -8,17 +8,17 @@ import axios from 'axios'
 import getUserLocation from '../Libs/getUserLocation'
 import Temperature from './Temperature'
 import { showWeather, findWeather } from '../Libs/background'
-import apiKey from '../key-info/apixu'
+import apiKey from '../key-info/apixu.js'
 
 /**
  * The main weather component.
- *  
+ *
  * This component attempts to read the GPS browser location, which
- * is subsequently used to retrieve and display weather data for 
- * the user's current location. 
- * If the GPS location cannot be determined, a static location is 
+ * is subsequently used to retrieve and display weather data for
+ * the user's current location.
+ * If the GPS location cannot be determined, a static location is
  * used (for demonstration purposes) instead.
- * 
+ *
  * @class Weather
  * @extends {PureComponent}
  */
@@ -46,7 +46,9 @@ class Weather extends PureComponent {
     const weatherServerUrl = weatherDataForGPS(latitude, longitude)
     // fetch weather data
     try {
-      const { data: { location, current } } = await axios.get(weatherServerUrl)
+      const {
+        data: { location, current },
+      } = await axios.get(weatherServerUrl)
       const { temp_c, temp_f, condition } = current
       const { icon, text } = condition
       // update background image
@@ -107,15 +109,17 @@ class Weather extends PureComponent {
 
 // For fun let's use some Higher Order Components
 // See https://www.robinwieruch.de/gentle-introduction-higher-order-components/
-const withLoading = Component => props =>
+const withLoading = Component => props => (
   <div style={mainStyles}>
     {props.isLoading ? <span>Loading...</span> : <Component {...props} />}
   </div>
+)
 
-const Panel = props =>
+const Panel = props => (
   <div style={weatherStyles}>
     <Temperature {...props} />
   </div>
+)
 
 const TemperatureWithLoading = compose(withLoading)(Panel)
 
@@ -128,7 +132,7 @@ let mainStyles = {
 
 let weatherStyles = {
   width: '300px',
-  height: '150px',
+  height: 'auto',
   border: '1px solid #fdb',
   borderRadius: '3%',
   backgroundColor: 'rgba(255, 255, 221,0.5)',
